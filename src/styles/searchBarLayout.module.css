@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.container label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0); /* 이 부분이 중요한 역할을 합니다 */
+  overflow: hidden;
+}
+
+.container input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 2px solid gray;
+  border-radius: 5px;
+  outline-style: none;
+}
+.container button {
+  width: 80px;
+  border: 2px solid gray;
+  border-radius: 5px;
+}
+
+.container input:focus {
+  border-color: brown;
+}
+
+.container button:hover {
+  border-color: brown;
+  background-color: brown;
+}
+
+.container button:active {
+  border-color: rgb(161, 88, 88);
+  background-color: rgb(161, 88, 88);
+}
