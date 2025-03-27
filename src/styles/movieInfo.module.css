@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: 300;
+}
+
+.sectionImg {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.sectionImg::after {
+  width: 100%;
+  height: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+  background-color: black;
+}
+
+.container img {
+  box-shadow: 10px 10px 25px rgba(0, 0, 0, 1);
+  z-index: 999;
+  height: 400px;
+}
+
+/* -------- description CSS ----------- */
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.descriptionContainer h3 {
+  font-size: 18px;
+}
+
+.descriptionContainer strong {
+  font-weight: bold;
+}
+
+.descriptionContainer p {
+  white-space: pre-line;
+  line-height: 120%;
+}

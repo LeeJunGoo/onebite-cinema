@@ -1,4 +1,4 @@
-import GlobalLayout from '@/components/GlobalLayout';
+import GlobalLayout from '@/components/layout/GlobalLayout';
 import '@/styles/globals.css';
 import { AppPropsWithLayout } from '@/types';
 import { ReactNode } from 'react';

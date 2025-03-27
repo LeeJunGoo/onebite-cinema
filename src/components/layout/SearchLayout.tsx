@@ -1,6 +1,6 @@
-import React, { ReactNode, useRef } from 'react';
 import s from '@/styles/searchBarLayout.module.css';
 import { useRouter } from 'next/router';
+import React, { ReactNode, useEffect, useRef } from 'react';
 
 const SearchBarLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -9,8 +9,8 @@ const SearchBarLayout = ({ children }: { children: ReactNode }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (inputRef.current === null) return inputRef.current;
+
     searchKeyword = inputRef.current.value;
     if (!searchKeyword) return alert('입력 해주세요');
 
@@ -21,7 +21,7 @@ const SearchBarLayout = ({ children }: { children: ReactNode }) => {
     <>
       <form className={s.container} onSubmit={handleSubmit}>
         <label>영화 검색 입력창입니다.</label>
-        <input name="search" ref={inputRef} />
+        <input name="search" ref={inputRef} placeholder="영화 이름을 검색해주세요" />
         <button type="submit">검색하기</button>
       </form>
       {children}
