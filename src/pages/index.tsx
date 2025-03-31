@@ -1,37 +1,38 @@
 import SearchBarLayout from '@/components/layout/SearchLayout';
 import MovieList from '@/components/MovieList';
-import movieData from '@/dummy.json';
+import fetchAllMovies from '@/lib/fetch-all-movies';
+import fetchRandomMovies from '@/lib/fetch-reco-movies';
 import s from '@/styles/Home.module.css';
-import { MovieData, NextPageWithLayout } from '@/types';
-import getBestMovies from '@/utility/getBestMovies';
-import { ReactNode, useEffect, useState } from 'react';
+import { NextPageWithLayout } from '@/types';
 import { categoryMovieList } from '@/utility/constant';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
-const Home: NextPageWithLayout = () => {
-  const [bestMovies, setBestMovies] = useState<MovieData[]>([]);
+export const getServerSideProps = async () => {
+  const [allMovies, randomMovies] = await Promise.all([fetchAllMovies(), fetchRandomMovies()]);
 
-  useEffect(() => {
-    const data = getBestMovies(movieData);
-    setBestMovies(data);
-  }, []);
+  if (!allMovies || !randomMovies) {
+    return {
+      notFound: true,
+    };
+  }
 
-  if (!movieData)
-    return (
-      <div>
-        영화 정보를 불러오지 못했습니다. <Link href={'/'}>메인 페이지로 이동</Link>
-      </div>
-    );
+  return {
+    props: { allMovies, randomMovies },
+  };
+};
 
+const Home: NextPageWithLayout = ({ allMovies, randomMovies }: InferGetServerSidePropsType<GetServerSideProps>) => {
   return (
     <div className={s.container}>
       <section>
         <h3>{categoryMovieList[0].title}</h3>
-        <MovieList movies={bestMovies} category={categoryMovieList[0].category} />
+        <MovieList movies={randomMovies} category={categoryMovieList[0].category} />
       </section>
       <section>
         <h3>{categoryMovieList[1].title}</h3>
-        <MovieList movies={movieData} category={categoryMovieList[1].category} />
+        <MovieList movies={allMovies} category={categoryMovieList[1].category} />
       </section>
       <br />
     </div>

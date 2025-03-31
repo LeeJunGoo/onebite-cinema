@@ -4,7 +4,7 @@
 }
 
 /* 추천 영화 */
-.bestContainer {
+.randomContainer {
   width: calc(33.33% - 20px);
 }
 

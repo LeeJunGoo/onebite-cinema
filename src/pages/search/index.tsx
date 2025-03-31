@@ -1,34 +1,33 @@
 import SearchBarLayout from '@/components/layout/SearchLayout';
-import MovieItem from '@/components/MovieItem';
-import movieData from '@/dummy.json';
-import s from '@/styles/searchMovie.module.css';
-import { MovieData } from '@/types';
-import getFilterMovies from '@/utility/getFilterMovies';
-import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { categoryMovieList } from '@/utility/constant';
 import MovieList from '@/components/MovieList';
+import fetchAllMovies from '@/lib/fetch-all-movies';
+import s from '@/styles/searchMovie.module.css';
+import { categoryMovieList } from '@/utility/constant';
+import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { ReactNode } from 'react';
 
-const Page = () => {
-  const router = useRouter();
-  const keyword = router.query.keyword as string;
-  const [filterMovies, setFilterMovies] = useState<MovieData[]>([]);
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const keyword = context.query.keyword as string;
+  const searchMovies = await fetchAllMovies(keyword);
 
-  useEffect(() => {
-    const data = getFilterMovies(keyword, movieData);
-    if (data) {
-      setFilterMovies(data);
-    }
-  }, [keyword]);
+  if (!searchMovies) {
+    return {
+      notFound: true,
+    };
+  }
 
-  if (!filterMovies || filterMovies.length === 0) return <div>검색한 영화 정보가 없습니다.</div>;
+  return {
+    props: { searchMovies, keyword },
+  };
+};
 
+const Page = ({ searchMovies, keyword }: InferGetServerSidePropsType<GetServerSideProps>) => {
   return (
     <div className={s.container}>
       <h3>
         {categoryMovieList[2].title}: {keyword}
       </h3>
-      <MovieList movies={filterMovies} category={categoryMovieList[0].category} />
+      <MovieList movies={searchMovies} category={categoryMovieList[0].category} />
     </div>
   );
 };

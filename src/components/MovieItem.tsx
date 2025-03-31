@@ -15,7 +15,7 @@ const MovieItem = ({
 }: MovieItemProps) => {
   return (
     <li
-      className={`${category === 'all' && s.allContainer} ${category === 'best' && s.bestContainer} ${
+      className={`${category === 'all' && s.allContainer} ${category === 'random' && s.randomContainer} ${
         category === 'search' && s.searchContainer
       }`}
     >
