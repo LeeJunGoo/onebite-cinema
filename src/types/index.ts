@@ -1,15 +1,14 @@
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactNode) => ReactNode;
 };
 
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
 export type MovieData = {
   id: number;
   title: string;
@@ -23,4 +22,4 @@ export type MovieData = {
 };
 
 export type MovieItemProps = MovieData & { category: string };
-export type MovieListProps = { movies: MovieData[]; category: string };
+export type MovieListProps = { movies: MovieData[] | null; category: string };

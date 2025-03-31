@@ -3,14 +3,13 @@ import MovieList from '@/components/MovieList';
 import fetchAllMovies from '@/lib/fetch-all-movies';
 import fetchRandomMovies from '@/lib/fetch-reco-movies';
 import s from '@/styles/Home.module.css';
-import { NextPageWithLayout } from '@/types';
+import { MovieData } from '@/types';
 import { categoryMovieList } from '@/utility/constant';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import Link from 'next/link';
+import { InferGetStaticPropsType } from 'next';
 import { ReactNode } from 'react';
 
-export const getServerSideProps = async () => {
-  const [allMovies, randomMovies] = await Promise.all([fetchAllMovies(), fetchRandomMovies()]);
+export const getStaticProps = async () => {
+  const [allMovies, randomMovies] = await Promise.all([fetchAllMovies<MovieData[]>(), fetchRandomMovies()]);
 
   if (!allMovies || !randomMovies) {
     return {
@@ -23,7 +22,7 @@ export const getServerSideProps = async () => {
   };
 };
 
-const Home: NextPageWithLayout = ({ allMovies, randomMovies }: InferGetServerSidePropsType<GetServerSideProps>) => {
+const Home = ({ allMovies, randomMovies }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <div className={s.container}>
       <section>

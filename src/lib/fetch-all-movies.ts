@@ -1,6 +1,6 @@
 import { MovieData } from '@/types';
 
-const fetchAllMovies = async <T>(arg?: T): Promise<MovieData[] | MovieData | null> => {
+const fetchAllMovies = async <T>(arg?: string | number): Promise<T | null> => {
   let url = 'http://localhost:12345/movie';
 
   //NOTE - 검색 데이터

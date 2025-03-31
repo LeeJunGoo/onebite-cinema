@@ -1,5 +1,14 @@
 # Onebite Cinema
 
+## Ver. 1.4.0 (2025.03.31)
+
+- main, detail 페이지: SSG로 변경 완료
+- search 페이지: SSG + CSR로 변경 완료
+
+## Ver. 1.3.0 (2025.03.31)
+
+- main, search, detail 페이지 SSR 완료
+
 ## Ver. 1.2.0 (2025.03.27)
 
 - 더미데이터, 타입 설정 완료

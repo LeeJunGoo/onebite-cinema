@@ -2,26 +2,30 @@ import SearchBarLayout from '@/components/layout/SearchLayout';
 import MovieList from '@/components/MovieList';
 import fetchAllMovies from '@/lib/fetch-all-movies';
 import s from '@/styles/searchMovie.module.css';
+import { MovieData } from '@/types';
 import { categoryMovieList } from '@/utility/constant';
-import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useState } from 'react';
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const keyword = context.query.keyword as string;
-  const searchMovies = await fetchAllMovies(keyword);
+const Page = () => {
+  const router = useRouter();
+  const keyword = router.query.keyword as string;
+  const [searchMovies, setSearchMovies] = useState<MovieData[] | null>([]);
 
-  if (!searchMovies) {
-    return {
-      notFound: true,
+  useEffect(() => {
+    const fetchData = async () => {
+      const searchMovies = await fetchAllMovies<MovieData[]>(keyword);
+
+      if (!searchMovies) {
+        router.push('/404');
+      }
+
+      setSearchMovies(searchMovies);
     };
-  }
 
-  return {
-    props: { searchMovies, keyword },
-  };
-};
+    fetchData();
+  }, [keyword]);
 
-const Page = ({ searchMovies, keyword }: InferGetServerSidePropsType<GetServerSideProps>) => {
   return (
     <div className={s.container}>
       <h3>

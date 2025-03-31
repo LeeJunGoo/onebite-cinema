@@ -1,46 +1,57 @@
 import fetchAllMovies from '@/lib/fetch-all-movies';
 import s from '@/styles/movieInfo.module.css';
-import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { MovieData } from '@/types';
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params!.id;
-  const detailMovie = await fetchAllMovies(Number(id));
+  const movie = await fetchAllMovies<MovieData>(Number(id));
 
-  if (!detailMovie) {
+  if (!movie) {
     return {
       notFound: true,
     };
   }
 
   return {
-    props: { detailMovie },
+    props: { movie },
   };
 };
 
-const Page = ({ detailMovie }: InferGetServerSidePropsType<GetServerSideProps>) => {
-  const { title, posterImgUrl, releaseDate, genres, runtime, company, subTitle, description } = detailMovie;
+export const getStaticPaths = async () => {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }, { params: { id: '3' } }],
+    fallback: true,
+  };
+};
+
+const Page = ({ movie }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>로딩 중입니다.</div>;
+  }
 
   return (
     <div className={s.container}>
-      <section className={s.sectionImg} style={{ backgroundImage: `url(${posterImgUrl})` }}>
-        <img src={posterImgUrl}></img>
+      <section className={s.sectionImg} style={{ backgroundImage: `url(${movie.posterImgUrl})` }}>
+        <img src={movie.posterImgUrl}></img>
       </section>
       <section className={s.descriptionContainer}>
         <h3>
-          <strong>{title}</strong>
+          <strong>{movie.title}</strong>
         </h3>
         <p>
-          <time>{releaseDate}&nbsp;&#47;&nbsp;</time>
-          <span>{genres.join(', ')}</span>&nbsp;&#47;&nbsp;
-          <span>{runtime}분</span>
+          <time>{movie.releaseDate}&nbsp;&#47;&nbsp;</time>
+          <span>{movie.genres.join(', ')}</span>&nbsp;&#47;&nbsp;
+          <span>{movie.runtime}분</span>
         </p>
-        <p>{company}</p>
+        <p>{movie.company}</p>
         <h4>
-          <strong>{subTitle}</strong>
+          <strong>{movie.subTitle}</strong>
         </h4>
-        <p>{description}</p>
+        <p>{movie.description}</p>
       </section>
     </div>
   );
