@@ -1,4 +1,5 @@
 import SearchBarLayout from '@/components/layout/SearchLayout';
+import MetaTag from '@/components/MetaTag';
 import MovieList from '@/components/MovieList';
 import fetchAllMovies from '@/lib/fetch-all-movies';
 import fetchRandomMovies from '@/lib/fetch-reco-movies';
@@ -19,22 +20,26 @@ export const getStaticProps = async () => {
 
   return {
     props: { allMovies, randomMovies },
+    revalidate: 10,
   };
 };
 
 const Home = ({ allMovies, randomMovies }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <div className={s.container}>
-      <section>
-        <h3>{categoryMovieList[0].title}</h3>
-        <MovieList movies={randomMovies} category={categoryMovieList[0].category} />
-      </section>
-      <section>
-        <h3>{categoryMovieList[1].title}</h3>
-        <MovieList movies={allMovies} category={categoryMovieList[1].category} />
-      </section>
-      <br />
-    </div>
+    <>
+      <MetaTag />
+      <div className={s.container}>
+        <section>
+          <h3>{categoryMovieList[0].title}</h3>
+          <MovieList movies={randomMovies} category={categoryMovieList[0].category} />
+        </section>
+        <section>
+          <h3>{categoryMovieList[1].title}</h3>
+          <MovieList movies={allMovies} category={categoryMovieList[1].category} />
+        </section>
+        <br />
+      </div>
+    </>
   );
 };
 

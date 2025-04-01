@@ -23,3 +23,4 @@ export type MovieData = {
 
 export type MovieItemProps = MovieData & { category: string };
 export type MovieListProps = { movies: MovieData[] | null; category: string };
+export type MetaTagProps = Partial<Pick<MovieData, 'title' | 'description' | 'posterImgUrl'>>;

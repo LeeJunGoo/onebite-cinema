@@ -1,4 +1,5 @@
 import SearchBarLayout from '@/components/layout/SearchLayout';
+import MetaTag from '@/components/MetaTag';
 import MovieList from '@/components/MovieList';
 import fetchAllMovies from '@/lib/fetch-all-movies';
 import s from '@/styles/searchMovie.module.css';
@@ -27,12 +28,15 @@ const Page = () => {
   }, [keyword]);
 
   return (
-    <div className={s.container}>
-      <h3>
-        {categoryMovieList[2].title}: {keyword}
-      </h3>
-      <MovieList movies={searchMovies} category={categoryMovieList[0].category} />
-    </div>
+    <>
+      <MetaTag title="한입 시네마 - 검색 결과" />
+      <div className={s.container}>
+        <h3>
+          {categoryMovieList[2].title}: {keyword}
+        </h3>
+        <MovieList movies={searchMovies} category={categoryMovieList[0].category} />
+      </div>
+    </>
   );
 };
 

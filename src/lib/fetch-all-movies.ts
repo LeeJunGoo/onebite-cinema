@@ -1,7 +1,7 @@
-import { MovieData } from '@/types';
+import { baseURL } from '@/utility/constant';
 
 const fetchAllMovies = async <T>(arg?: string | number): Promise<T | null> => {
-  let url = 'http://localhost:12345/movie';
+  let url = baseURL;
 
   //NOTE - 검색 데이터
   if (typeof arg === 'string') {
